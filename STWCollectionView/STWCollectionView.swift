@@ -27,7 +27,9 @@ protocol STWCollectionViewDelegate: UICollectionViewDelegate {
 }
 
 extension STWCollectionViewDelegate {
+    
     func collectionViewDidScrollWithPercentages(_ collectionView: STWCollectionView, visibleIndexPaths indexPaths:[IndexPath], percentageVisibleIndexPaths percentages:[CGFloat]){}
+    
 }
 
 class STWCollectionView: UICollectionView  {
@@ -279,9 +281,7 @@ class STWCollectionView: UICollectionView  {
             let limitMin = -self.contentInset.left
             let limitMax = self.contentSize.width - self.contentInset.right - (self.itemSize.width * CGFloat(columns)) - (itemSpacing * CGFloat(columns - 1))
             if newPoint.x < limitMin { resultNewPoint.x = limitMin }
-            if newPoint.x > limitMax && limitMax > 0 {
-                resultNewPoint.x = limitMax
-            }
+            if newPoint.x > limitMax && limitMax > 0 { resultNewPoint.x = limitMax }
         
         break
         case .vertical:
