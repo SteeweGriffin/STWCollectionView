@@ -41,7 +41,7 @@ class ViewController: UIViewController {
         self.view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-[stackView]-|", options: NSLayoutFormatOptions(rawValue:0), metrics: nil, views: ["stackView":stackView]))
         self.view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[collection]-20-[stackView]->=0-|", options: NSLayoutFormatOptions.alignAllCenterX, metrics: nil, views: ["collection":self.collection, "stackView":stackView]))
         
-        self.view.addConstraint(NSLayoutConstraint(item: self.collection, attribute: .height, relatedBy: .equal, toItem: self.collection, attribute: .width, multiplier: 1, constant: 0))
+        self.view.addConstraint(NSLayoutConstraint(item: self.collection, attribute: .bottom, relatedBy: .equal, toItem: self.view, attribute: .centerY, multiplier: 1, constant: 0))
 
         
         // SCROLL TO

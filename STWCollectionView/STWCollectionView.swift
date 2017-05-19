@@ -109,6 +109,7 @@ class STWCollectionView: UICollectionView  {
     public private(set) var currentVisibleIndexPaths = [IndexPath]()
     
     private weak var internalDelegate:STWCollectionViewDelegate?
+    private var currentPage:CGFloat = 0
     
     override weak var delegate: UICollectionViewDelegate? {
         didSet {
@@ -126,6 +127,7 @@ class STWCollectionView: UICollectionView  {
         self.decelerationRate = UIScrollViewDecelerationRateNormal
         self.backgroundColor = .red
         self.addObserver(self, forKeyPath: "contentOffset", options: [.new], context: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(STWCollectionView.deviceOrientationDidChange), name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
         layout.scrollDirection = direction
         
         self.updateItemSize()
@@ -134,6 +136,13 @@ class STWCollectionView: UICollectionView  {
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
+    }
+    
+    func deviceOrientationDidChange(){
+
+        DispatchQueue.main.async {
+            self.updateItemSize()
+        }
     }
     
     /**
@@ -330,27 +339,27 @@ class STWCollectionView: UICollectionView  {
     
     private func findCurrentPage(contentOffset:CGFloat) -> CGFloat {
         
-        var currentPage:CGFloat = 0
+        self.currentPage = 0
         
         switch direction {
         case .horizontal:
             
             let currentOffset = contentOffset + horizontalPadding + itemSpacing + offsetHorizontalPadding/2
             let currentSize = self.frame.size.width - horizontalPadding * 2 - (itemSpacing * CGFloat(columns)) + (itemSpacing * CGFloat(columns - 1)) - offsetHorizontalPadding
-            currentPage = (currentOffset/currentSize*CGFloat(columns)) + CGFloat((columns - 1))/2
+            self.currentPage = (currentOffset/currentSize*CGFloat(columns)) + CGFloat((columns - 1))/2
             
             break
         case .vertical:
             
             let currentOffset = contentOffset + verticalPadding + itemSpacing + offsetVerticalPadding/2
             let currentSize = self.frame.size.height - verticalPadding * 2 - (itemSpacing * CGFloat(columns)) + (itemSpacing * CGFloat(columns - 1)) - offsetVerticalPadding
-            currentPage = (currentOffset/currentSize*CGFloat(columns)) + CGFloat((columns - 1))/2
+            self.currentPage = (currentOffset/currentSize*CGFloat(columns)) + CGFloat((columns - 1))/2
             
             break
         }
         
         
-        return currentPage
+        return self.currentPage
     }
     
     /**
