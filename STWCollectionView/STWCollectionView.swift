@@ -132,6 +132,10 @@ class STWCollectionView: UICollectionView  {
         
         self.updateItemSize()
     }
+    
+    deinit {
+        self.removeObserver(self, forKeyPath: "contentOffset", context: nil)
+    }
 
     
     required init?(coder aDecoder: NSCoder) {
