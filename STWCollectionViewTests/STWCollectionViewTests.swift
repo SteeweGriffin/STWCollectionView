@@ -10,7 +10,7 @@ import XCTest
 @testable import STWCollectionView
 
 
-class STWCollectionViewTests: XCTestCase {
+class STWCollectionViewTests: XCTestCase, STWCollectionViewDelegate {
     
     
     let collectionColumns  = STWCollectionView(frame: CGRect(x: 0, y: 0, width: 300, height: 300))
@@ -67,7 +67,8 @@ class STWCollectionViewTests: XCTestCase {
         collectionFixedVerticalShort.itemSpacing = defaultItemSpacing
         collectionFixedVerticalShort.fixedSize = defaultFixedSize
 
-        
+        collectionColumns.delegate = self
+        XCTAssertNotNil(collectionColumns.delegate)
     }
     
     override func tearDown() {

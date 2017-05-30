@@ -77,7 +77,7 @@ class ViewController: UIViewController {
         //VERTICAL LINE
         let lineV = UIView()
         lineV.translatesAutoresizingMaskIntoConstraints = false
-        lineV.backgroundColor = UIColor.black.withAlphaComponent(0.3)
+        lineV.backgroundColor = UIColor.red.withAlphaComponent(0.3)
         self.view.addSubview(lineV)
         
         self.view.addConstraint(NSLayoutConstraint(item: lineV, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 1))
@@ -88,7 +88,7 @@ class ViewController: UIViewController {
         //HORIZONTAL LINE
         let lineH = UIView()
         lineH.translatesAutoresizingMaskIntoConstraints = false
-        lineH.backgroundColor = UIColor.black.withAlphaComponent(0.3)
+        lineH.backgroundColor = UIColor.red.withAlphaComponent(0.3)
         self.view.addSubview(lineH)
         
         self.view.addConstraint(NSLayoutConstraint(item: lineH, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 1))
@@ -118,18 +118,28 @@ class ViewController: UIViewController {
         self.labelScrollTo.text = "SCROLL TO: \(self.indexToSlide)"
     }
     
+    
 }
 
-
 extension ViewController: STWCollectionViewDelegate {
+    
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         self.collection.scrollTo(indexPath: indexPath, animated: true)
     }
     
+    func collectionViewDidEndDeceleratingWithPercentages(_ collectionView: STWCollectionView, visibleIndexPaths indexPaths: [IndexPath], percentageVisibleIndexPaths percentages: [CGFloat]) {
+        print("indexPaths after Decelerating: \(indexPaths)")
+        print("percentage after Decelerating: \(percentages)")
+    }
+    
+    func collectionViewDidEndScrollingAnimationWithPercentages(_ collectionView: STWCollectionView, visibleIndexPaths indexPaths: [IndexPath], percentageVisibleIndexPaths percentages: [CGFloat]) {
+        print("indexPaths after Scrolling Animation: \(indexPaths)")
+        print("percentage after Scrolling Animation: \(percentages)")
+    }
+    
     func collectionViewDidScrollWithPercentages(_ collectionView: STWCollectionView, visibleIndexPaths indexPaths: [IndexPath], percentageVisibleIndexPaths percentages: [CGFloat]) {
 
-        
         for i in 0..<indexPaths.count {
             
             if let cell = collectionView.cellForItem(at: indexPaths[i]) {

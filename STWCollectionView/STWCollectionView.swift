@@ -8,6 +8,70 @@
 
 import UIKit
 
+/// Multicast Delegate
+
+class STWCollectionProxy: NSObject, STWCollectionViewDelegate {
+    
+    weak var delegateInside: STWCollectionViewDelegate?
+    weak var delegateOutside: STWCollectionViewDelegate?
+    
+    
+    // MARK: Common Methods UICollectionViewDelegate Proxy
+    
+    public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        delegateInside?.collectionView?(collectionView, didSelectItemAt: indexPath)
+        delegateOutside?.collectionView?(collectionView, didSelectItemAt: indexPath)
+    }
+    
+    public func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        delegateInside?.collectionView?(collectionView, willDisplay: cell, forItemAt: indexPath)
+        delegateOutside?.collectionView?(collectionView, willDisplay: cell, forItemAt: indexPath)
+    }
+    
+    public func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+        delegateInside?.collectionView?(collectionView, didDeselectItemAt: indexPath)
+        delegateOutside?.collectionView?(collectionView, didDeselectItemAt: indexPath)
+    }
+    
+    public func collectionView(_ collectionView: UICollectionView, didHighlightItemAt indexPath: IndexPath) {
+        delegateInside?.collectionView?(collectionView, didHighlightItemAt: indexPath)
+        delegateOutside?.collectionView?(collectionView, didHighlightItemAt: indexPath)
+    }
+    
+    public func collectionView(_ collectionView: UICollectionView, didUnhighlightItemAt indexPath: IndexPath) {
+        delegateInside?.collectionView?(collectionView, didUnhighlightItemAt: indexPath)
+        delegateOutside?.collectionView?(collectionView, didUnhighlightItemAt: indexPath)
+    }
+    
+    public func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        delegateInside?.collectionView?(collectionView, didEndDisplaying: cell, forItemAt: indexPath)
+        delegateOutside?.collectionView?(collectionView, didEndDisplaying: cell, forItemAt: indexPath)
+    }
+    
+    // MARK: Common Methods UIScrollViewDelegate Proxy
+    
+    public func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        delegateInside?.scrollViewDidScroll?(scrollView)
+        delegateOutside?.scrollViewDidScroll?(scrollView)
+    }
+    
+    public func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        delegateInside?.scrollViewDidEndDecelerating?(scrollView)
+        delegateOutside?.scrollViewDidEndDecelerating?(scrollView)
+    }
+    
+    public func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
+        delegateInside?.scrollViewDidEndScrollingAnimation?(scrollView)
+        delegateOutside?.scrollViewDidEndScrollingAnimation?(scrollView)
+    }
+    
+    public func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        delegateInside?.scrollViewDidEndDragging?(scrollView, willDecelerate: decelerate)
+        delegateOutside?.scrollViewDidEndDragging?(scrollView, willDecelerate: decelerate)
+    }
+    
+}
+
 
 /// STWCollectionViewDelegate extends UICollectionViewDelegate by adding method collectionViewDidScrollWithPercentages
 
@@ -24,15 +88,43 @@ protocol STWCollectionViewDelegate: UICollectionViewDelegate {
      */
     
     func collectionViewDidScrollWithPercentages(_ collectionView: STWCollectionView, visibleIndexPaths indexPaths:[IndexPath], percentageVisibleIndexPaths percentages:[CGFloat])
+    
+    /**
+     
+     Tells the delegate when the STWCollectionView did end decellerating
+     
+     - parameter collectionView: STWCollectionView object in which the scrolling occurred
+     - parameter visibleIndexPaths: [IndexPath] contains the visible items' indexPaths
+     - parameter percentageVisibleIndexPaths: [CGFloat] contains the the visible items' proximity percentages from STWCollectionView center
+     
+     */
+    
+    func collectionViewDidEndDeceleratingWithPercentages(_ collectionView: STWCollectionView, visibleIndexPaths indexPaths:[IndexPath], percentageVisibleIndexPaths percentages:[CGFloat])
+    
+    /**
+     
+     Tells the delegate when the STWCollectionView did end scrolling animation
+     
+     - parameter collectionView: STWCollectionView object in which the scrolling occurred
+     - parameter visibleIndexPaths: [IndexPath] contains the visible items' indexPaths
+     - parameter percentageVisibleIndexPaths: [CGFloat] contains the the visible items' proximity percentages from STWCollectionView center
+     
+     */
+    
+    func collectionViewDidEndScrollingAnimationWithPercentages(_ collectionView: STWCollectionView, visibleIndexPaths indexPaths:[IndexPath], percentageVisibleIndexPaths percentages:[CGFloat])
+
+    
 }
 
 extension STWCollectionViewDelegate {
     
     func collectionViewDidScrollWithPercentages(_ collectionView: STWCollectionView, visibleIndexPaths indexPaths:[IndexPath], percentageVisibleIndexPaths percentages:[CGFloat]){}
+    func collectionViewDidEndDeceleratingWithPercentages(_ collectionView: STWCollectionView, visibleIndexPaths indexPaths:[IndexPath], percentageVisibleIndexPaths percentages:[CGFloat]){}
+    func collectionViewDidEndScrollingAnimationWithPercentages(_ collectionView: STWCollectionView, visibleIndexPaths indexPaths:[IndexPath], percentageVisibleIndexPaths percentages:[CGFloat]){}
     
 }
 
-class STWCollectionView: UICollectionView  {
+class STWCollectionView: UICollectionView, STWCollectionViewDelegate  {
     
     private let layout:STWCollectionViewFlowLayout = STWCollectionViewFlowLayout()
     
@@ -108,38 +200,42 @@ class STWCollectionView: UICollectionView  {
     
     public private(set) var currentVisibleIndexPaths = [IndexPath]()
     
-    private weak var internalDelegate:STWCollectionViewDelegate?
+    
     private var currentPage:CGFloat = 0
     
-    override weak var delegate: UICollectionViewDelegate? {
-        didSet {
-            internalDelegate =  delegate as? STWCollectionViewDelegate
+    /// Multicast delegate
+    
+    private var proxy = STWCollectionProxy()
+    
+    override var delegate: UICollectionViewDelegate? {
+        get {
+            return super.delegate
+        }
+        set{
+            self.proxy.delegateOutside = newValue as? STWCollectionViewDelegate
         }
     }
     
     public convenience init() {
-       self.init(frame: CGRect.zero)
+        self.init(frame: CGRect.zero)
+        self.proxy.delegateInside = self
     }
     
     public init(frame: CGRect) {
         
         super.init(frame: frame, collectionViewLayout: layout)
-        self.decelerationRate = UIScrollViewDecelerationRateNormal
-        self.backgroundColor = .red
-        self.addObserver(self, forKeyPath: "contentOffset", options: [.new], context: nil)
+        super.delegate = self.proxy
+        self.decelerationRate = UIScrollViewDecelerationRateFast
         NotificationCenter.default.addObserver(self, selector: #selector(STWCollectionView.deviceOrientationDidChange), name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
         layout.scrollDirection = direction
         
         self.updateItemSize()
     }
     
-    deinit {
-        self.removeObserver(self, forKeyPath: "contentOffset", context: nil)
-    }
-
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
+        super.delegate = self.proxy
     }
     
     func deviceOrientationDidChange(){
@@ -422,24 +518,37 @@ class STWCollectionView: UICollectionView  {
         
     }
     
-    /**
-     
-     Dispatches scroll event to STWCollectionViewDelegate
-     
-     */
-
-    
-    private func dispatchDidScroll() {
-        let currentPage = self.findCurrentPage(contentOffset: (direction == .horizontal) ? contentOffset.x : contentOffset.y)
+    func calculatePercentages(scrollView: UIScrollView) -> [CGFloat] {
+        
+        let currentPage = self.findCurrentPage(contentOffset: (direction == .horizontal) ? scrollView.contentOffset.x : scrollView.contentOffset.y)
         self.updateCurrentVisibleIndexPaths(currentPage: currentPage)
         let percentages = self.findPercentageVisibleIndexPaths(currentPage: currentPage)
-        self.internalDelegate?.collectionViewDidScrollWithPercentages(self, visibleIndexPaths: self.currentVisibleIndexPaths, percentageVisibleIndexPaths: percentages)
-    }
 
-    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-        if keyPath == "contentOffset" {
-            self.dispatchDidScroll()
+        return percentages
+    }
+    
+    // MARK: UIScrollViewDelegate
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        DispatchQueue.main.async {
+            let percentages = self.calculatePercentages(scrollView: scrollView)
+            self.proxy.delegateOutside?.collectionViewDidScrollWithPercentages(self, visibleIndexPaths: self.currentVisibleIndexPaths, percentageVisibleIndexPaths: percentages)
         }
     }
+    
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        DispatchQueue.main.async {
+            let percentages = self.calculatePercentages(scrollView: scrollView)
+            self.proxy.delegateOutside?.collectionViewDidEndDeceleratingWithPercentages(self, visibleIndexPaths: self.currentVisibleIndexPaths, percentageVisibleIndexPaths: percentages)
+        }
+    }
+    
+    func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
+        DispatchQueue.main.async {
+            let percentages = self.calculatePercentages(scrollView: scrollView)
+            self.proxy.delegateOutside?.collectionViewDidEndScrollingAnimationWithPercentages(self, visibleIndexPaths: self.currentVisibleIndexPaths, percentageVisibleIndexPaths: percentages)
+        }
+    }
+    
 }
 
