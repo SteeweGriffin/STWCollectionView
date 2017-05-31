@@ -76,7 +76,7 @@ class STWCollectionProxy: NSObject, STWCollectionViewDelegate {
 /// STWCollectionViewDelegate extends UICollectionViewDelegate by adding method collectionViewDidScrollWithPercentages
 
 protocol STWCollectionViewDelegate: UICollectionViewDelegate {
-
+    
     /**
      
      Tells the delegate when the STWCollectionView scrolls
@@ -112,7 +112,7 @@ protocol STWCollectionViewDelegate: UICollectionViewDelegate {
      */
     
     func collectionViewDidEndScrollingAnimationWithPercentages(_ collectionView: STWCollectionView, visibleIndexPaths indexPaths:[IndexPath], percentageVisibleIndexPaths percentages:[CGFloat])
-
+    
     
 }
 
@@ -138,7 +138,7 @@ class STWCollectionView: UICollectionView, STWCollectionViewDelegate  {
             if fixedSize == nil || direction == .vertical { self.updateItemSize() }
         }
     }
- 
+    
     
     
     /// Distance of cells form left and right border
@@ -150,7 +150,7 @@ class STWCollectionView: UICollectionView, STWCollectionViewDelegate  {
             if fixedSize == nil || direction == .horizontal { self.updateItemSize() }
         }
     }
- 
+    
     
     /// Distance beetween cells
     /// - default: 20
@@ -158,7 +158,7 @@ class STWCollectionView: UICollectionView, STWCollectionViewDelegate  {
     public var itemSpacing:CGFloat = 20 {
         didSet { self.updateItemSize() }
     }
- 
+    
     
     /// Numbers of simultaneous visible cells
     /// - Sets fixedSize to nil when is setted
@@ -169,7 +169,7 @@ class STWCollectionView: UICollectionView, STWCollectionViewDelegate  {
             if fixedSize == nil { self.updateItemSize() }
         }
     }
- 
+    
     
     /// Fixed size of cells
     /// - Disables columns when is setted
@@ -200,8 +200,10 @@ class STWCollectionView: UICollectionView, STWCollectionViewDelegate  {
     
     public private(set) var currentVisibleIndexPaths = [IndexPath]()
     
+    /// Current Page in center
+    /// - if visible columns are even the result is a CGFloat beetween two value
     
-    private var currentPage:CGFloat = 0
+    public var currentPage:CGFloat = 0
     
     /// Multicast delegate
     
@@ -239,7 +241,7 @@ class STWCollectionView: UICollectionView, STWCollectionViewDelegate  {
     }
     
     func deviceOrientationDidChange(){
-
+        
         DispatchQueue.main.async {
             self.updateItemSize()
         }
@@ -277,7 +279,7 @@ class STWCollectionView: UICollectionView, STWCollectionViewDelegate  {
                 let preventWidth = (self.bounds.size.width - (horizontalPadding * 2) - ((itemSpacing) * CGFloat(columns + 1))) / CGFloat(columns)
                 let difference =  preventWidth - fixedSize!.width
                 offsetHorizontalPadding = difference * CGFloat(columns)
-
+                
                 break
             case .vertical:
                 
@@ -309,7 +311,7 @@ class STWCollectionView: UICollectionView, STWCollectionViewDelegate  {
             break
         }
         
-
+        
         if  widthItem > 0 && heightItem > 0 {
             
             layout.invalidateLayout()
@@ -334,36 +336,36 @@ class STWCollectionView: UICollectionView, STWCollectionViewDelegate  {
         
         switch direction {
         case .horizontal:
-                
-                let stepPage:CGFloat = self.itemSize.width + itemSpacing
-                
-                let offset:CGFloat = (CGFloat(indexPath.item) * stepPage) - horizontalPadding - itemSpacing - offsetHorizontalPadding/2
-                newPoint = CGPoint(x:offset, y:0)
-                
-                var difference = self.findCurrentPage(contentOffset: newPoint.x) - CGFloat(indexPath.item)
-                let gap = self.findCurrentPage(contentOffset: self.contentOffset.x) - CGFloat(indexPath.item)
-                
-                if (difference - gap >= 1 && columns%2 == 0 && gap < 0) { difference += 1 }
-                
-                newPoint.x -= (self.itemSize.width + itemSpacing) * CGFloat(Int(difference))
-                
+            
+            let stepPage:CGFloat = self.itemSize.width + itemSpacing
+            
+            let offset:CGFloat = (CGFloat(indexPath.item) * stepPage) - horizontalPadding - itemSpacing - offsetHorizontalPadding/2
+            newPoint = CGPoint(x:offset, y:0)
+            
+            var difference = self.findCurrentPage(contentOffset: newPoint.x) - CGFloat(indexPath.item)
+            let gap = self.findCurrentPage(contentOffset: self.contentOffset.x) - CGFloat(indexPath.item)
+            
+            if (difference - gap >= 1 && columns%2 == 0 && gap < 0) { difference += 1 }
+            
+            newPoint.x -= (self.itemSize.width + itemSpacing) * CGFloat(Int(difference))
+            
             
             break
         case .vertical:
-                
-                let stepPage:CGFloat = self.itemSize.height + itemSpacing
-                
-                let offset:CGFloat = (CGFloat(indexPath.item) * stepPage) - verticalPadding - itemSpacing - offsetVerticalPadding/2
-                newPoint = CGPoint(x:0, y:offset)
-                
-                var difference = self.findCurrentPage(contentOffset: newPoint.y) - CGFloat(indexPath.item)
-                let gap = self.findCurrentPage(contentOffset: self.contentOffset.y) - CGFloat(indexPath.item)
-                
-                if (difference - gap >= 1 && columns%2 == 0 && gap < 0) { difference += 1 }
-                
-                newPoint.y -= (self.itemSize.height + itemSpacing) * CGFloat(Int(difference))
-                
-        
+            
+            let stepPage:CGFloat = self.itemSize.height + itemSpacing
+            
+            let offset:CGFloat = (CGFloat(indexPath.item) * stepPage) - verticalPadding - itemSpacing - offsetVerticalPadding/2
+            newPoint = CGPoint(x:0, y:offset)
+            
+            var difference = self.findCurrentPage(contentOffset: newPoint.y) - CGFloat(indexPath.item)
+            let gap = self.findCurrentPage(contentOffset: self.contentOffset.y) - CGFloat(indexPath.item)
+            
+            if (difference - gap >= 1 && columns%2 == 0 && gap < 0) { difference += 1 }
+            
+            newPoint.y -= (self.itemSize.height + itemSpacing) * CGFloat(Int(difference))
+            
+            
             break
         }
         
@@ -371,7 +373,7 @@ class STWCollectionView: UICollectionView, STWCollectionViewDelegate  {
         
         
         return newPoint
-
+        
     }
     
     /**
@@ -386,27 +388,27 @@ class STWCollectionView: UICollectionView, STWCollectionViewDelegate  {
         var resultNewPoint = newPoint
         switch direction {
         case .horizontal:
-        
+            
             let limitMin = -self.contentInset.left
             let limitMax = self.contentSize.width - self.contentInset.right - (self.itemSize.width * CGFloat(columns)) - (itemSpacing * CGFloat(columns - 1))
             if newPoint.x < limitMin { resultNewPoint.x = limitMin }
             if newPoint.x > limitMax && limitMax > 0 { resultNewPoint.x = limitMax }
-        
-        break
+            
+            break
         case .vertical:
-        
+            
             let limitMin = -self.contentInset.top
             let limitMax = self.contentSize.height - self.contentInset.bottom - (self.itemSize.height * CGFloat(columns)) - (itemSpacing * CGFloat(columns - 1))
             if newPoint.y < limitMin { resultNewPoint.y = limitMin }
             if newPoint.y > limitMax && limitMax > 0 { resultNewPoint.y = limitMax }
-        
-        break
+            
+            break
         }
-
-    
+        
+        
         return resultNewPoint
     }
-
+    
     /**
      
      Scrolls STWCollectionView at indexPath
@@ -419,7 +421,7 @@ class STWCollectionView: UICollectionView, STWCollectionViewDelegate  {
     public func scrollTo(indexPath:IndexPath, animated:Bool){
         self.setContentOffset(self.calculateNewPoint(indexPath), animated: animated)
     }
-
+    
     override func layoutSubviews() {
         super.layoutSubviews()
         if self.itemSize != layout.itemSize {
@@ -469,7 +471,7 @@ class STWCollectionView: UICollectionView, STWCollectionViewDelegate  {
      - parameter currentPage: current central index page
      
      */
-
+    
     
     private func updateCurrentVisibleIndexPaths(currentPage: CGFloat) {
         self.currentVisibleIndexPaths = [IndexPath]()
@@ -487,7 +489,7 @@ class STWCollectionView: UICollectionView, STWCollectionViewDelegate  {
             }
             
         }
-
+        
     }
     
     /**
@@ -504,7 +506,7 @@ class STWCollectionView: UICollectionView, STWCollectionViewDelegate  {
         
         for i in 0..<self.currentVisibleIndexPaths.count {
             let item = self.currentVisibleIndexPaths[i].item
-    
+            
             let difference = abs(CGFloat(item) - currentPage)
             let offsetColumns = (columns%2 == 0) ? 1 : 2
             let value = 1 - (difference / (CGFloat((columns + offsetColumns)/2)))
@@ -523,7 +525,7 @@ class STWCollectionView: UICollectionView, STWCollectionViewDelegate  {
         let currentPage = self.findCurrentPage(contentOffset: (direction == .horizontal) ? scrollView.contentOffset.x : scrollView.contentOffset.y)
         self.updateCurrentVisibleIndexPaths(currentPage: currentPage)
         let percentages = self.findPercentageVisibleIndexPaths(currentPage: currentPage)
-
+        
         return percentages
     }
     
@@ -551,4 +553,3 @@ class STWCollectionView: UICollectionView, STWCollectionViewDelegate  {
     }
     
 }
-

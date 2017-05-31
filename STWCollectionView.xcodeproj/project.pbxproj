@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		0B6764801ECB0833004FA2B5 /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B67647F1ECB0833004FA2B5 /* SettingViewController.swift */; };
 		0B6764821ECB5152004FA2B5 /* CollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B6764811ECB5152004FA2B5 /* CollectionViewCell.swift */; };
+		0BC3B2C61EDEE78900029CA3 /* STWCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BC3B2C41EDEE78900029CA3 /* STWCollectionView.swift */; };
+		0BC3B2C71EDEE78900029CA3 /* STWCollectionViewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BC3B2C51EDEE78900029CA3 /* STWCollectionViewFlowLayout.swift */; };
 		0BF795321EB8BDDA0085319C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BF795311EB8BDDA0085319C /* AppDelegate.swift */; };
 		0BF795341EB8BDDA0085319C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BF795331EB8BDDA0085319C /* ViewController.swift */; };
 		0BF795371EB8BDDA0085319C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0BF795351EB8BDDA0085319C /* Main.storyboard */; };
@@ -16,8 +18,6 @@
 		0BF7953C1EB8BDDA0085319C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0BF7953A1EB8BDDA0085319C /* LaunchScreen.storyboard */; };
 		0BF795471EB8BDDB0085319C /* STWCollectionViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BF795461EB8BDDB0085319C /* STWCollectionViewTests.swift */; };
 		0BF795521EB8BDDB0085319C /* STWCollectionViewUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BF795511EB8BDDB0085319C /* STWCollectionViewUITests.swift */; };
-		0BF795601EB8BE140085319C /* STWCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BF7955F1EB8BE140085319C /* STWCollectionView.swift */; };
-		0BF795621EB8CD1E0085319C /* STWCollectionViewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BF795611EB8CD1E0085319C /* STWCollectionViewFlowLayout.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,6 +40,8 @@
 /* Begin PBXFileReference section */
 		0B67647F1ECB0833004FA2B5 /* SettingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
 		0B6764811ECB5152004FA2B5 /* CollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionViewCell.swift; sourceTree = "<group>"; };
+		0BC3B2C41EDEE78900029CA3 /* STWCollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = STWCollectionView.swift; sourceTree = "<group>"; };
+		0BC3B2C51EDEE78900029CA3 /* STWCollectionViewFlowLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = STWCollectionViewFlowLayout.swift; sourceTree = "<group>"; };
 		0BF7952E1EB8BDDA0085319C /* STWCollectionView.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = STWCollectionView.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0BF795311EB8BDDA0085319C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0BF795331EB8BDDA0085319C /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -53,8 +55,6 @@
 		0BF7954D1EB8BDDB0085319C /* STWCollectionViewUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = STWCollectionViewUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		0BF795511EB8BDDB0085319C /* STWCollectionViewUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STWCollectionViewUITests.swift; sourceTree = "<group>"; };
 		0BF795531EB8BDDB0085319C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		0BF7955F1EB8BE140085319C /* STWCollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = STWCollectionView.swift; sourceTree = "<group>"; };
-		0BF795611EB8CD1E0085319C /* STWCollectionViewFlowLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = STWCollectionViewFlowLayout.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,9 +82,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0BC3B2C31EDEE78900029CA3 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				0BC3B2C41EDEE78900029CA3 /* STWCollectionView.swift */,
+				0BC3B2C51EDEE78900029CA3 /* STWCollectionViewFlowLayout.swift */,
+			);
+			path = Classes;
+			sourceTree = "<group>";
+		};
 		0BF795251EB8BDDA0085319C = {
 			isa = PBXGroup;
 			children = (
+				0BC3B2C31EDEE78900029CA3 /* Classes */,
 				0BF795301EB8BDDA0085319C /* STWCollectionView */,
 				0BF795451EB8BDDB0085319C /* STWCollectionViewTests */,
 				0BF795501EB8BDDB0085319C /* STWCollectionViewUITests */,
@@ -113,8 +123,6 @@
 				0BF795381EB8BDDA0085319C /* Assets.xcassets */,
 				0BF7953A1EB8BDDA0085319C /* LaunchScreen.storyboard */,
 				0BF7953D1EB8BDDA0085319C /* Info.plist */,
-				0BF7955F1EB8BE140085319C /* STWCollectionView.swift */,
-				0BF795611EB8CD1E0085319C /* STWCollectionViewFlowLayout.swift */,
 			);
 			path = STWCollectionView;
 			sourceTree = "<group>";
@@ -274,9 +282,9 @@
 				0B6764801ECB0833004FA2B5 /* SettingViewController.swift in Sources */,
 				0BF795341EB8BDDA0085319C /* ViewController.swift in Sources */,
 				0B6764821ECB5152004FA2B5 /* CollectionViewCell.swift in Sources */,
-				0BF795621EB8CD1E0085319C /* STWCollectionViewFlowLayout.swift in Sources */,
-				0BF795601EB8BE140085319C /* STWCollectionView.swift in Sources */,
 				0BF795321EB8BDDA0085319C /* AppDelegate.swift in Sources */,
+				0BC3B2C61EDEE78900029CA3 /* STWCollectionView.swift in Sources */,
+				0BC3B2C71EDEE78900029CA3 /* STWCollectionViewFlowLayout.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -429,6 +437,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = STWCollectionView/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = Steewe.STWCollectionView;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -441,6 +450,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = STWCollectionView/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = Steewe.STWCollectionView;
 				PRODUCT_NAME = "$(TARGET_NAME)";

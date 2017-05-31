@@ -117,8 +117,6 @@ class ViewController: UIViewController {
         self.indexToSlide = Int(round(sender.value))
         self.labelScrollTo.text = "SCROLL TO: \(self.indexToSlide)"
     }
-    
-    
 }
 
 extension ViewController: STWCollectionViewDelegate {
