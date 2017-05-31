@@ -21,11 +21,10 @@ Further, STWCollectionView has a delegate to better manage cells during the scro
     s.social_media_url = "https://twitter.com/Steewitter"
 
     s.source = {
-        :git => "https://github.com/SteeweGriffin/STWCollectionView.git",
-        :tag => "v0.0.1"
+        :git => "https://github.com/SteeweGriffin/STWCollectionView.git"
     }
 
     s.framework = "UIKit"
 
-    s.source_files = "Classes/*"
+    s.source_files = "Classes/*.{swift, h}"
 end
