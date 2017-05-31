@@ -42,6 +42,7 @@
 		0B6764811ECB5152004FA2B5 /* CollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionViewCell.swift; sourceTree = "<group>"; };
 		0BC3B2C41EDEE78900029CA3 /* STWCollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = STWCollectionView.swift; sourceTree = "<group>"; };
 		0BC3B2C51EDEE78900029CA3 /* STWCollectionViewFlowLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = STWCollectionViewFlowLayout.swift; sourceTree = "<group>"; };
+		0BC3B2C81EDF08C700029CA3 /* STWCollectionView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = STWCollectionView.h; sourceTree = "<group>"; };
 		0BF7952E1EB8BDDA0085319C /* STWCollectionView.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = STWCollectionView.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0BF795311EB8BDDA0085319C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0BF795331EB8BDDA0085319C /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -87,6 +88,7 @@
 			children = (
 				0BC3B2C41EDEE78900029CA3 /* STWCollectionView.swift */,
 				0BC3B2C51EDEE78900029CA3 /* STWCollectionViewFlowLayout.swift */,
+				0BC3B2C81EDF08C700029CA3 /* STWCollectionView.h */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
