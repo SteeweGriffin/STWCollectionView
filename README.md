@@ -1,5 +1,5 @@
 # STWCollectionView
-===================
+
 
 [![Platform](http://img.shields.io/badge/platform-iOS-blue.svg?style=flat
 )](https://developer.apple.com/iphone/index.action)
@@ -14,7 +14,7 @@ You can set the space between the cells and the vertical and horizontal padding 
 Further, STWCollectionView has a delegate to better manage cells during the scrolling phase such as: the cell's currently visible indexPaths and their percentage of positioning based on the center.
 
 <kbd>
-![sample](screenshots/exampleSTWCollectionView.gif)
+![Demo](screenshots/exampleSTWCollectionView.gif)
 </kbd>
 
 ## Installation
@@ -137,7 +137,7 @@ You can customize `STWCollectionView` for all your needs
 
   ```swift
   var direction: UICollectionViewScrollDirection { get set }
- // default: .horizontal
+  // default: .horizontal
  
   ```
   
