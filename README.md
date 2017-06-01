@@ -137,7 +137,7 @@ You can customize `STWCollectionView` for all your needs
 
   ```swift
   var direction: UICollectionViewScrollDirection { get set }
- // default: .horizontal
+  // default: .horizontal
  
   ```
   
