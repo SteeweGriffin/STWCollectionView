@@ -128,12 +128,12 @@ extension ViewController: STWCollectionViewDelegate {
     
     func collectionViewDidEndDeceleratingWithPercentages(_ collectionView: STWCollectionView, visibleIndexPaths indexPaths: [IndexPath], percentageVisibleIndexPaths percentages: [CGFloat]) {
         print("indexPaths after Decelerating: \(indexPaths)")
-        print("percentage after Decelerating: \(percentages)")
+        print("percentages after Decelerating: \(percentages)")
     }
     
     func collectionViewDidEndScrollingAnimationWithPercentages(_ collectionView: STWCollectionView, visibleIndexPaths indexPaths: [IndexPath], percentageVisibleIndexPaths percentages: [CGFloat]) {
         print("indexPaths after Scrolling Animation: \(indexPaths)")
-        print("percentage after Scrolling Animation: \(percentages)")
+        print("percentages after Scrolling Animation: \(percentages)")
     }
     
     func collectionViewDidScrollWithPercentages(_ collectionView: STWCollectionView, visibleIndexPaths indexPaths: [IndexPath], percentageVisibleIndexPaths percentages: [CGFloat]) {

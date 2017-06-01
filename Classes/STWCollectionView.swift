@@ -130,7 +130,7 @@ class STWCollectionView: UICollectionView, STWCollectionViewDelegate  {
     
     
     /// Distance of cells form top and bottom border
-    /// - Disabled if the STWCollectiuonView is in horizontal and has a fixedSize
+    /// - Disabled if the STWCollectionView is in horizontal and has a fixedSize
     /// - default: 20
     
     public var verticalPadding:CGFloat = 20 {
@@ -142,7 +142,7 @@ class STWCollectionView: UICollectionView, STWCollectionViewDelegate  {
     
     
     /// Distance of cells form left and right border
-    /// - Disabled if the STWCollectiuonView is in vertical and has a fixedSize
+    /// - Disabled if the STWCollectionView is in vertical and has a fixedSize
     /// - default: 20
     
     public var horizontalPadding:CGFloat = 20 {
@@ -178,7 +178,7 @@ class STWCollectionView: UICollectionView, STWCollectionViewDelegate  {
         didSet { self.updateItemSize() }
     }
     
-    /// STWCollectionView direction
+    /// Direction of scrolling
     /// - default: .horizontal
     
     public var direction:UICollectionViewScrollDirection = .horizontal {
@@ -194,16 +194,16 @@ class STWCollectionView: UICollectionView, STWCollectionViewDelegate  {
     
     /// Size cells
     
-    public var itemSize:CGSize = CGSize.zero
+    public private(set) var itemSize:CGSize = CGSize.zero
     
     /// Contains current visible items' indexPaths
     
     public private(set) var currentVisibleIndexPaths = [IndexPath]()
     
-    /// Current Page in center
+    /// Current Index in center
     /// - if visible columns are even the result is a CGFloat beetween two value
     
-    public var currentPage:CGFloat = 0
+    public private(set) var currentPage:CGFloat = 0
     
     /// Multicast delegate
     
@@ -228,7 +228,7 @@ class STWCollectionView: UICollectionView, STWCollectionViewDelegate  {
         super.init(frame: frame, collectionViewLayout: layout)
         super.delegate = self.proxy
         self.decelerationRate = UIScrollViewDecelerationRateFast
-        NotificationCenter.default.addObserver(self, selector: #selector(STWCollectionView.deviceOrientationDidChange), name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(deviceOrientationDidChange), name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
         layout.scrollDirection = direction
         
         self.updateItemSize()
@@ -240,7 +240,7 @@ class STWCollectionView: UICollectionView, STWCollectionViewDelegate  {
         super.delegate = self.proxy
     }
     
-    func deviceOrientationDidChange(){
+    internal func deviceOrientationDidChange(){
         
         DispatchQueue.main.async {
             self.updateItemSize()
@@ -520,7 +520,7 @@ class STWCollectionView: UICollectionView, STWCollectionViewDelegate  {
         
     }
     
-    func calculatePercentages(scrollView: UIScrollView) -> [CGFloat] {
+    private func calculatePercentages(scrollView: UIScrollView) -> [CGFloat] {
         
         let currentPage = self.findCurrentPage(contentOffset: (direction == .horizontal) ? scrollView.contentOffset.x : scrollView.contentOffset.y)
         self.updateCurrentVisibleIndexPaths(currentPage: currentPage)
