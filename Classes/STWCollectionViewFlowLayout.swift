@@ -46,17 +46,37 @@ class STWCollectionViewFlowLayout: UICollectionViewFlowLayout {
 
         guard let closeRect = self.findCloseAttribute(layoutAttributes: layoutAttributes, proposedrect:proposedRect, collectionView: collectionView) else { return proposedContentOffset }
 
-        var newPoint:CGPoint = CGPoint.zero
+        var newPoint:CGPoint = closeRect.frame.origin
         
         switch collectionView.direction {
         case .horizontal:
             
-            newPoint = CGPoint(x: closeRect.frame.origin.x - collectionView.horizontalPadding - collectionView.itemSpacing - collectionView.offsetHorizontalPadding/2, y: closeRect.frame.origin.y)
+            newPoint.x = closeRect.frame.origin.x - collectionView.horizontalPadding - collectionView.itemSpacing - collectionView.offsetHorizontalPadding/2
+            
+            let checkOffset = closeRect.center.x - (collectionView.itemSize.width + collectionView.itemSpacing) / 2 - collectionView.horizontalPadding - collectionView.offsetHorizontalPadding/2
+            let offset = checkOffset - collectionView.contentOffset.x
+        
+            if (velocity.x < 0.0 && offset > 0.0) || (velocity.x > 0.0 && offset < 0.0) {
+                let stepItem = collectionView.itemSize.width + collectionView.itemSpacing
+                let itemOffset = velocity.x > 0 ? stepItem : -stepItem
+                newPoint.x = newPoint.x + itemOffset
+            }
+
             
             break
         case .vertical:
             
-            newPoint = CGPoint(x: closeRect.frame.origin.x, y:closeRect.frame.origin.y - collectionView.verticalPadding - collectionView.itemSpacing - collectionView.offsetVerticalPadding/2 )
+            newPoint.y = closeRect.frame.origin.y - collectionView.verticalPadding - collectionView.itemSpacing - collectionView.offsetVerticalPadding/2
+            
+            let checkOffset = closeRect.center.y - (collectionView.itemSize.height + collectionView.itemSpacing) / 2 - collectionView.verticalPadding - collectionView.offsetVerticalPadding/2
+            let offset = checkOffset - collectionView.contentOffset.y
+            
+            if (velocity.y < 0.0 && offset > 0.0) || (velocity.y > 0.0 && offset < 0.0) {
+                let stepItem = collectionView.itemSize.height + collectionView.itemSpacing
+                let itemOffset = velocity.y > 0 ? stepItem : -stepItem
+                newPoint.y = newPoint.y + itemOffset
+            }
+
             
             break
         }
