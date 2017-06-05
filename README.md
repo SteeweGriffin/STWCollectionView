@@ -9,7 +9,7 @@
 )](http://mit-license.org)
 
 STWCollectionView is an UICollectionView sublcass easy to create and manage for a collection with carousel effect and is very simple to customize.
-You can set how many columns are visible simultaneously or give a fixed size to cells, and the collection will set automatically the columns.
+You can set how many cells are visible simultaneously or give a fixed size to cells, and the collection will set automatically the simultaneously visible cells.
 You can set the space between the cells and the vertical and horizontal padding than you can see a bit of the adjacent cells.
 Further, STWCollectionView has a delegate to better manage cells during the scrolling phase such as: the cell's currently visible indexPaths and their percentage of positioning based on the center.
 
@@ -93,7 +93,7 @@ You can customize `STWCollectionView` for all your needs
 **STWCollectionView setting properties**:
 
 * **`verticalPadding`** Distance of cells form top and bottom border.
-**❕ Disabled if the STWCollectionView is in horizontal and has a fixedSize**
+**❕ Disabled if the STWCollectionView is in horizontal and has a fixedCellSize**
 
   ```swift
   var verticalPadding: CGFloat { get set }
@@ -101,7 +101,7 @@ You can customize `STWCollectionView` for all your needs
   ```
 
 * **`horizontalPadding`** Distance of cells form left and right border.
-**❕ Disabled if the STWCollectionView is in vertical and has a fixedSize**
+**❕ Disabled if the STWCollectionView is in vertical and has a fixedCellSize**
 
   ```swift
   var horizontalPadding: CGFloat { get set }
@@ -115,20 +115,20 @@ You can customize `STWCollectionView` for all your needs
   // default: 20
   ```
 
-* **`columns`** Numbers of simultaneous visible cells.
-**❕ Sets fixedSize to nil when is setted**
+* **`fixedCellsNumber`** Numbers of simultaneous visible cells.
+**❕ Sets fixedCellSize to nil when is setted**
 
   ```swift
-  var columns: Int { get set }
+  var fixedCellsNumber: Int { get set }
   // default: 1
 
   ```
   
-* **`fixedSize`** Fixed size of cells.
-**❕ Automatically calculates columns when is setted**
+* **`fixedCellSize`** Fixed size of cells.
+**❕ Automatically calculates fixedCellsNumber when is setted**
 
   ```swift
-  var fixedSize: CGSize? { get set }
+  var fixedCellSize: CGSize? { get set }
 
   ```
 
@@ -151,7 +151,7 @@ You can customize `STWCollectionView` for all your needs
   ```
   
 * **`currentPage`** Current Index in center.
-**❕ if visible columns are even the result is a CGFloat beetween two value**
+**❕ if fixedCellsNumber are even the result is a CGFloat beetween two value**
 
   ```swift
   var currentPage: CGFloat { get }

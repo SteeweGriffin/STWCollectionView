@@ -98,6 +98,11 @@ class ViewController: UIViewController {
 
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.collection.scrollViewDidScroll(self.collection)
+    }
+    
     func goToSettings(){
         let settings = SettingViewController(collection: self.collection)
         self.navigationController?.pushViewController(settings, animated: true)

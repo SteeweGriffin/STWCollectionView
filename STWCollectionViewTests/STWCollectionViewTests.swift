@@ -38,7 +38,7 @@ class STWCollectionViewTests: XCTestCase, STWCollectionViewDelegate {
         XCTAssertNotNil(collectionFixedHorizontalShort.collectionViewLayout as? STWCollectionViewFlowLayout)
         XCTAssertNotNil(collectionFixedVerticalShort.collectionViewLayout as? STWCollectionViewFlowLayout)
         
-        collectionColumns.columns = defaultColumnsEven
+        collectionColumns.fixedCellsNumber = defaultColumnsEven
         collectionColumns.horizontalPadding = defaultHorizontalPadding
         collectionColumns.verticalPadding = defaultVerticalPadding
         collectionColumns.itemSpacing = defaultItemSpacing
@@ -47,25 +47,25 @@ class STWCollectionViewTests: XCTestCase, STWCollectionViewDelegate {
         collectionFixedHorizontal.horizontalPadding = defaultHorizontalPadding
         collectionFixedHorizontal.verticalPadding = defaultVerticalPadding
         collectionFixedHorizontal.itemSpacing = defaultItemSpacing
-        collectionFixedHorizontal.fixedSize = defaultFixedSize
+        collectionFixedHorizontal.fixedCellSize = defaultFixedSize
         
         collectionFixedVertical.direction = defaultDirectionVertical
         collectionFixedVertical.horizontalPadding = defaultHorizontalPadding
         collectionFixedVertical.verticalPadding = defaultVerticalPadding
         collectionFixedVertical.itemSpacing = defaultItemSpacing
-        collectionFixedVertical.fixedSize = defaultFixedSize
+        collectionFixedVertical.fixedCellSize = defaultFixedSize
         
         collectionFixedHorizontalShort.direction = defaultDirectionHorizontal
         collectionFixedHorizontalShort.horizontalPadding = defaultHorizontalPadding
         collectionFixedHorizontalShort.verticalPadding = defaultVerticalPadding
         collectionFixedHorizontalShort.itemSpacing = defaultItemSpacing
-        collectionFixedHorizontalShort.fixedSize = defaultFixedSize
+        collectionFixedHorizontalShort.fixedCellSize = defaultFixedSize
         
         collectionFixedVerticalShort.direction = defaultDirectionVertical
         collectionFixedVerticalShort.horizontalPadding = defaultHorizontalPadding
         collectionFixedVerticalShort.verticalPadding = defaultVerticalPadding
         collectionFixedVerticalShort.itemSpacing = defaultItemSpacing
-        collectionFixedVerticalShort.fixedSize = defaultFixedSize
+        collectionFixedVerticalShort.fixedCellSize = defaultFixedSize
 
         collectionColumns.delegate = self
         XCTAssertNotNil(collectionColumns.delegate)
@@ -80,73 +80,73 @@ class STWCollectionViewTests: XCTestCase, STWCollectionViewDelegate {
     
     func testUpdateItemSize() {
         
-        XCTAssertEqual(collectionColumns.columns, defaultColumnsEven)
+        XCTAssertEqual(collectionColumns.fixedCellsNumber, defaultColumnsEven)
         XCTAssertEqual(collectionColumns.horizontalPadding, defaultHorizontalPadding)
         XCTAssertEqual(collectionColumns.verticalPadding, defaultVerticalPadding)
         XCTAssertEqual(collectionColumns.itemSpacing, defaultItemSpacing)
         XCTAssertEqual(collectionColumns.direction, defaultDirectionHorizontal)
-        XCTAssertNil(collectionColumns.fixedSize)
+        XCTAssertNil(collectionColumns.fixedCellSize)
         XCTAssertEqual(collectionColumns.offsetVerticalPadding, 0)
         XCTAssertEqual(collectionColumns.offsetHorizontalPadding, 0)
         XCTAssertNotNil(collectionColumns.itemSize)
-        XCTAssertGreaterThanOrEqual(collectionColumns.columns, 1)
+        XCTAssertGreaterThanOrEqual(collectionColumns.fixedCellsNumber, 1)
         
         collectionColumns.direction = .horizontal
-        let resultWidthColumns = collectionColumns.bounds.size.width - collectionColumns.horizontalPadding*2 - (collectionColumns.itemSpacing * CGFloat(collectionColumns.columns + 1))
-        XCTAssertEqual(collectionColumns.itemSize.width, resultWidthColumns/CGFloat(collectionColumns.columns))
+        let resultWidthColumns = collectionColumns.bounds.size.width - collectionColumns.horizontalPadding*2 - (collectionColumns.itemSpacing * CGFloat(collectionColumns.fixedCellsNumber + 1))
+        XCTAssertEqual(collectionColumns.itemSize.width, resultWidthColumns/CGFloat(collectionColumns.fixedCellsNumber))
         
         collectionColumns.direction = .vertical
-        let resultHeightColumns = collectionColumns.bounds.size.height - collectionColumns.verticalPadding*2 - (collectionColumns.itemSpacing * CGFloat(collectionColumns.columns + 1))
-        XCTAssertEqual(collectionColumns.itemSize.height, resultHeightColumns/CGFloat(collectionColumns.columns))
+        let resultHeightColumns = collectionColumns.bounds.size.height - collectionColumns.verticalPadding*2 - (collectionColumns.itemSpacing * CGFloat(collectionColumns.fixedCellsNumber + 1))
+        XCTAssertEqual(collectionColumns.itemSize.height, resultHeightColumns/CGFloat(collectionColumns.fixedCellsNumber))
 
         collectionColumns.direction = defaultDirectionHorizontal
-        collectionColumns.columns = defaultColumnsOdd
-        XCTAssertEqual(collectionColumns.columns, defaultColumnsOdd)
+        collectionColumns.fixedCellsNumber = defaultColumnsOdd
+        XCTAssertEqual(collectionColumns.fixedCellsNumber, defaultColumnsOdd)
         XCTAssertEqual(collectionColumns.horizontalPadding, defaultHorizontalPadding)
         XCTAssertEqual(collectionColumns.verticalPadding, defaultVerticalPadding)
         XCTAssertEqual(collectionColumns.itemSpacing, defaultItemSpacing)
         XCTAssertEqual(collectionColumns.direction, defaultDirectionHorizontal)
-        XCTAssertNil(collectionColumns.fixedSize)
+        XCTAssertNil(collectionColumns.fixedCellSize)
         XCTAssertEqual(collectionColumns.offsetVerticalPadding, 0)
         XCTAssertEqual(collectionColumns.offsetHorizontalPadding, 0)
         XCTAssertNotNil(collectionColumns.itemSize)
-        XCTAssertGreaterThanOrEqual(collectionColumns.columns, 1)
+        XCTAssertGreaterThanOrEqual(collectionColumns.fixedCellsNumber, 1)
         
         XCTAssertEqual(collectionFixedHorizontal.horizontalPadding, defaultHorizontalPadding)
         XCTAssertEqual(collectionFixedHorizontal.itemSpacing, defaultItemSpacing)
-        XCTAssertEqual(collectionFixedHorizontal.fixedSize, defaultFixedSize)
+        XCTAssertEqual(collectionFixedHorizontal.fixedCellSize, defaultFixedSize)
         XCTAssertEqual(collectionFixedHorizontal.direction, defaultDirectionHorizontal)
-        XCTAssertEqual(collectionFixedHorizontal.itemSize, collectionFixedHorizontal.fixedSize)
+        XCTAssertEqual(collectionFixedHorizontal.itemSize, collectionFixedHorizontal.fixedCellSize)
         XCTAssertEqual(collectionFixedHorizontal.offsetVerticalPadding, 0)
         XCTAssertNotNil(collectionFixedHorizontal.itemSize)
-        XCTAssertGreaterThanOrEqual(collectionFixedHorizontal.columns, 1)
+        XCTAssertGreaterThanOrEqual(collectionFixedHorizontal.fixedCellsNumber, 1)
         
         XCTAssertEqual(collectionFixedVertical.verticalPadding, defaultVerticalPadding)
         XCTAssertEqual(collectionFixedVertical.itemSpacing, defaultItemSpacing)
-        XCTAssertEqual(collectionFixedVertical.fixedSize, defaultFixedSize)
+        XCTAssertEqual(collectionFixedVertical.fixedCellSize, defaultFixedSize)
         XCTAssertEqual(collectionFixedVertical.direction, defaultDirectionVertical)
-        XCTAssertEqual(collectionFixedVertical.itemSize, collectionFixedVertical.fixedSize)
+        XCTAssertEqual(collectionFixedVertical.itemSize, collectionFixedVertical.fixedCellSize)
         XCTAssertEqual(collectionFixedVertical.offsetHorizontalPadding, 0)
         XCTAssertNotNil(collectionFixedVertical.itemSize)
-        XCTAssertGreaterThanOrEqual(collectionFixedVertical.columns, 1)
+        XCTAssertGreaterThanOrEqual(collectionFixedVertical.fixedCellsNumber, 1)
         
         XCTAssertEqual(collectionFixedHorizontalShort.horizontalPadding, defaultHorizontalPadding)
         XCTAssertEqual(collectionFixedHorizontalShort.itemSpacing, defaultItemSpacing)
-        XCTAssertEqual(collectionFixedHorizontalShort.fixedSize, defaultFixedSize)
+        XCTAssertEqual(collectionFixedHorizontalShort.fixedCellSize, defaultFixedSize)
         XCTAssertEqual(collectionFixedHorizontalShort.direction, defaultDirectionHorizontal)
-        XCTAssertEqual(collectionFixedHorizontalShort.itemSize, collectionFixedHorizontalShort.fixedSize)
+        XCTAssertEqual(collectionFixedHorizontalShort.itemSize, collectionFixedHorizontalShort.fixedCellSize)
         XCTAssertEqual(collectionFixedHorizontalShort.offsetVerticalPadding, 0)
         XCTAssertNotNil(collectionFixedHorizontalShort.itemSize)
-        XCTAssertGreaterThanOrEqual(collectionFixedHorizontalShort.columns, 1)
+        XCTAssertGreaterThanOrEqual(collectionFixedHorizontalShort.fixedCellsNumber, 1)
         
         XCTAssertEqual(collectionFixedVerticalShort.verticalPadding, defaultVerticalPadding)
         XCTAssertEqual(collectionFixedVerticalShort.itemSpacing, defaultItemSpacing)
-        XCTAssertEqual(collectionFixedVerticalShort.fixedSize, defaultFixedSize)
+        XCTAssertEqual(collectionFixedVerticalShort.fixedCellSize, defaultFixedSize)
         XCTAssertEqual(collectionFixedVerticalShort.direction, defaultDirectionVertical)
-        XCTAssertEqual(collectionFixedVerticalShort.itemSize, collectionFixedVerticalShort.fixedSize)
+        XCTAssertEqual(collectionFixedVerticalShort.itemSize, collectionFixedVerticalShort.fixedCellSize)
         XCTAssertEqual(collectionFixedVerticalShort.offsetHorizontalPadding, 0)
         XCTAssertNotNil(collectionFixedVerticalShort.itemSize)
-        XCTAssertGreaterThanOrEqual(collectionFixedVerticalShort.columns, 1) 
+        XCTAssertGreaterThanOrEqual(collectionFixedVerticalShort.fixedCellsNumber, 1) 
         
     }
     

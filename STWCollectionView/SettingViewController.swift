@@ -13,7 +13,7 @@ enum SettingItemType:String {
     case spacing = "Spacing"
     case hPadding = "H-Padding"
     case vPadding = "V-Padding"
-    case columns = "Columns"
+    case fixedCellsNumber = "Fix-Cells"
     case fixedSizeWidth = "Fix-Width"
     case fixedSizeHeight = "Fix-Height"
 }
@@ -174,8 +174,8 @@ class SettingViewController: UIViewController, SettingsDeleagte {
         self.stackView.addArrangedSubview(labelSpecifics)
         
         //Segment Type
-        let segmentType = UISegmentedControl(items: ["Columns","Fixed Size"])
-        segmentType.selectedSegmentIndex = (self.collection?.fixedSize == nil) ? 0 : 1
+        let segmentType = UISegmentedControl(items: ["Fixed Cells","Fixed Size"])
+        segmentType.selectedSegmentIndex = (self.collection?.fixedCellSize == nil) ? 0 : 1
         segmentType.addTarget(self, action: #selector(segmentTypeDidChange(_:)), for: .valueChanged)
         self.stackView.addArrangedSubview(segmentType)
         
@@ -192,9 +192,9 @@ class SettingViewController: UIViewController, SettingsDeleagte {
         columnsStackView.translatesAutoresizingMaskIntoConstraints = false
         self.stackView.addArrangedSubview(columnsStackView)
         
-        let columnsItem = SettingItemView(type: .columns)
+        let columnsItem = SettingItemView(type: .fixedCellsNumber)
         columnsItem.delegate = self
-        columnsItem.updateValue(value: "\(String(describing: collection!.columns))")
+        columnsItem.updateValue(value: "\(String(describing: collection!.fixedCellsNumber))")
         
         let hPaddingItem = SettingItemView(type: .hPadding)
         hPaddingItem.delegate = self
@@ -225,11 +225,11 @@ class SettingViewController: UIViewController, SettingsDeleagte {
         
         let widthItem = SettingItemView(type: .fixedSizeWidth)
         widthItem.delegate = self
-        widthItem.updateValue(value: (self.collection?.fixedSize != nil) ? "\(String(describing: collection!.fixedSize!.width))" : "0")
+        widthItem.updateValue(value: (self.collection?.fixedCellSize != nil) ? "\(String(describing: collection!.fixedCellSize!.width))" : "0")
         
         let heightItem = SettingItemView(type: .fixedSizeHeight)
         heightItem.delegate = self
-        heightItem.updateValue(value: (self.collection?.fixedSize != nil) ? "\(String(describing: collection!.fixedSize!.height))" : "0")
+        heightItem.updateValue(value: (self.collection?.fixedCellSize != nil) ? "\(String(describing: collection!.fixedCellSize!.height))" : "0")
         
         let paddingItem = SettingItemView(type: (self.collection?.direction == .horizontal) ? .hPadding : .vPadding)
         paddingItem.delegate = self
@@ -267,7 +267,7 @@ class SettingViewController: UIViewController, SettingsDeleagte {
             break
         }
         
-        if self.collection?.fixedSize != nil {
+        if self.collection?.fixedCellSize != nil {
             self.createFixedSizeSettings()
         }
     }
@@ -278,7 +278,7 @@ class SettingViewController: UIViewController, SettingsDeleagte {
         switch sender.selectedSegmentIndex {
         case 0:
             
-            self.collection?.fixedSize = nil
+            self.collection?.fixedCellSize = nil
             self.createColumnsSettings()
             
             break
@@ -303,11 +303,11 @@ class SettingViewController: UIViewController, SettingsDeleagte {
                 collection?.itemSpacing = item.getValue()
                 break
                 
-            case .columns:
+            case .fixedCellsNumber:
                 if item.getValue() <= 0 {
                     self.lunchAlertController(item)
                 }else{
-                    collection?.columns = Int(item.getValue())
+                    collection?.fixedCellsNumber = Int(item.getValue())
                 }
                 break
                 
@@ -320,13 +320,13 @@ class SettingViewController: UIViewController, SettingsDeleagte {
                 break
                 
             case .fixedSizeWidth:
-                let heightValue = (self.collection?.fixedSize != nil) ?  self.collection?.fixedSize?.height : item.getValue()
-                collection?.fixedSize = CGSize(width: item.getValue(), height: heightValue!)
+                let heightValue = (self.collection?.fixedCellSize != nil) ?  self.collection?.fixedCellSize?.height : item.getValue()
+                collection?.fixedCellSize = CGSize(width: item.getValue(), height: heightValue!)
                 break
                 
             case .fixedSizeHeight:
-                let widthValue = (self.collection?.fixedSize != nil) ?  self.collection?.fixedSize?.width : item.getValue()
-                collection?.fixedSize = CGSize(width: widthValue!, height: item.getValue())
+                let widthValue = (self.collection?.fixedCellSize != nil) ?  self.collection?.fixedCellSize?.width : item.getValue()
+                collection?.fixedCellSize = CGSize(width: widthValue!, height: item.getValue())
                 break
 
             }
@@ -336,7 +336,7 @@ class SettingViewController: UIViewController, SettingsDeleagte {
     //Alert Controller
     
     func lunchAlertController(_ item:SettingItemView){
-        let alertController = UIAlertController(title: "Warning!", message: "columns number not be less then 1", preferredStyle: .alert)
+        let alertController = UIAlertController(title: "Warning!", message: "fixedCellsNumber number not be less then 1", preferredStyle: .alert)
         
         let action = UIAlertAction(title: "OK", style: .default) { (action) in
             item.updateValue(value: "1")
