@@ -43,6 +43,7 @@ class ViewController: UIViewController {
         
         self.view.addConstraint(NSLayoutConstraint(item: self.collection, attribute: .bottom, relatedBy: .equal, toItem: self.view, attribute: .centerY, multiplier: 1, constant: 0))
 
+
         
         // SCROLL TO
         self.labelScrollTo.translatesAutoresizingMaskIntoConstraints = false

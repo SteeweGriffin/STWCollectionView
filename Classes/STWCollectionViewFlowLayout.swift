@@ -20,13 +20,13 @@ class STWCollectionViewFlowLayout: UICollectionViewFlowLayout {
         switch collectionView.direction {
             
         case .horizontal:
-            let inset = collectionView.itemSpacing + collectionView.horizontalPadding + collectionView.offsetHorizontalPadding/2
+            let inset = collectionView.itemSpacing + collectionView.horizontalPadding + ((collectionView.forceCentered) ? collectionView.offsetHorizontalPadding/2 : 0)
             collectionView.contentInset = UIEdgeInsets(top: 0, left: inset, bottom: 0, right: inset)
             collectionView.contentOffset = CGPoint(x: -inset, y: 0)
 
             break
         case .vertical:
-            let inset = collectionView.itemSpacing + collectionView.verticalPadding + collectionView.offsetVerticalPadding/2
+            let inset = collectionView.itemSpacing + collectionView.verticalPadding + ((collectionView.forceCentered) ? collectionView.offsetVerticalPadding/2 : 0)
             collectionView.contentInset = UIEdgeInsets(top: inset, left: 0, bottom: inset, right: 0)
             collectionView.contentOffset = CGPoint(x: 0, y: -inset)
 

@@ -19,12 +19,14 @@ Further, STWCollectionView has a delegate to better manage cells during the scro
 
 ## Installation
 
-#### CocoaPods
+**CocoaPods:**
+
 ```
 pod 'STWCollectionView'
 ```
 
-#### Manually
+**Manually**
+
 Add `STWCollectionView.swift` and  `STWCollectionViewFlowLayout.swift` file to your project.
 
 
@@ -129,6 +131,15 @@ You can customize `STWCollectionView` for all your needs
 
   ```swift
   var fixedCellSize: CGSize? { get set }
+
+  ```
+  
+* **`forceCentered`** Force the contentInset of STWCollectionView so that first and last items are centered.
+**❕ Work only with fixedCellSize setted**
+
+  ```swift
+  var forceCentered: Bool { get set }
+  // default: false
 
   ```
 

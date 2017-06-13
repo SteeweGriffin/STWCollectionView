@@ -178,6 +178,13 @@ class STWCollectionView: UICollectionView, STWCollectionViewDelegate  {
         didSet { self.updateItemSize() }
     }
     
+    /// Force the contentInset of STWCollectionView so that first and last items are centered
+    /// - Work only with fixedCellSize setted
+    
+    public var forceCentered:Bool = false {
+        didSet { self.updateItemSize() }
+    }
+    
     /// Direction of scrolling
     /// - default: .horizontal
     

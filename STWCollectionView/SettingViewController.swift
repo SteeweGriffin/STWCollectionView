@@ -16,6 +16,7 @@ enum SettingItemType:String {
     case fixedCellsNumber = "Fix-Cells"
     case fixedSizeWidth = "Fix-Width"
     case fixedSizeHeight = "Fix-Height"
+    case forceCenterd = "Force Centered"
 }
 
 protocol SettingsDeleagte:class {
@@ -34,6 +35,7 @@ extension String {
 class SettingItemView: UIView {
     
     private let input = UITextField()
+    private let switcher = UISwitch()
     weak var delegate: SettingsDeleagte?
     var type:SettingItemType?
     
@@ -60,21 +62,31 @@ class SettingItemView: UIView {
         label.text = self.type?.rawValue
         self.addSubview(label)
         
-        //Input
-        self.input.autocorrectionType = .no
-        self.input.spellCheckingType = .no
-        self.input.translatesAutoresizingMaskIntoConstraints = false
-        self.input.keyboardType = .decimalPad
-        self.input.keyboardAppearance = .dark
-        self.input.layer.borderColor = UIColor.gray.cgColor
-        self.input.layer.borderWidth = 1
-        self.input.textAlignment = .center
-        self.input.addTarget(self, action: #selector(inputDidChange(_:)), for: .editingChanged)
-        self.addSubview(self.input)
-        
-        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[input(>=100)]-[label]|", options: NSLayoutFormatOptions(rawValue:0), metrics: nil, views: ["label":label,"input":self.input]))
-        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[label]|", options: NSLayoutFormatOptions(rawValue:0), metrics: nil, views: ["label":label]))
-        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[input]|", options: NSLayoutFormatOptions(rawValue:0), metrics: nil, views: ["input":self.input]))
+        if self.type! == .forceCenterd {
+            self.switcher.translatesAutoresizingMaskIntoConstraints = false
+            self.switcher.addTarget(self, action: #selector(switcherDidChange(_:)), for: .valueChanged)
+            self.addSubview(self.switcher)
+            
+            self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[switcher]->=0-[label]|", options: NSLayoutFormatOptions(rawValue:0), metrics: nil, views: ["label":label,"switcher":self.switcher]))
+            self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[label]|", options: NSLayoutFormatOptions(rawValue:0), metrics: nil, views: ["label":label]))
+            self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[switcher]|", options: NSLayoutFormatOptions(rawValue:0), metrics: nil, views: ["switcher":self.switcher]))
+        } else {
+            //Input
+            self.input.autocorrectionType = .no
+            self.input.spellCheckingType = .no
+            self.input.translatesAutoresizingMaskIntoConstraints = false
+            self.input.keyboardType = .decimalPad
+            self.input.keyboardAppearance = .dark
+            self.input.layer.borderColor = UIColor.gray.cgColor
+            self.input.layer.borderWidth = 1
+            self.input.textAlignment = .center
+            self.input.addTarget(self, action: #selector(inputDidChange(_:)), for: .editingChanged)
+            self.addSubview(self.input)
+            
+            self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[input(>=100)]-[label]|", options: NSLayoutFormatOptions(rawValue:0), metrics: nil, views: ["label":label,"input":self.input]))
+            self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[label]|", options: NSLayoutFormatOptions(rawValue:0), metrics: nil, views: ["label":label]))
+            self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[input]|", options: NSLayoutFormatOptions(rawValue:0), metrics: nil, views: ["input":self.input]))
+        }
 
     }
     
@@ -83,7 +95,16 @@ class SettingItemView: UIView {
         self.input.placeholder = value
     }
     
+    func updateValue(active:Bool) {
+        //self.input.text = value
+        self.switcher.setOn(active, animated: false)
+    }
+    
     func inputDidChange(_ sender:UITextField) {
+        self.delegate?.didChangeValue(item: self)
+    }
+    
+    func switcherDidChange(_ sender:UISwitch) {
         self.delegate?.didChangeValue(item: self)
     }
     
@@ -94,6 +115,10 @@ class SettingItemView: UIView {
         guard !text.isEmpty else { return placeholder.getCGFloat() }
         return text.getCGFloat()
         
+    }
+    
+    func getBoolValue() -> Bool {
+        return self.switcher.isOn
     }
     
 }
@@ -236,9 +261,14 @@ class SettingViewController: UIViewController, SettingsDeleagte {
         let paddingValue = (self.collection?.direction == .horizontal) ? collection!.horizontalPadding : collection!.verticalPadding
         paddingItem.updateValue(value: "\(String(describing: paddingValue))")
         
+        let forceCentered = SettingItemView(type: .forceCenterd)
+        forceCentered.delegate = self
+        forceCentered.updateValue(active: self.collection!.forceCentered)
+        
         fixedSizeStackView.addArrangedSubview(widthItem)
         fixedSizeStackView.addArrangedSubview(heightItem)
         fixedSizeStackView.addArrangedSubview(paddingItem)
+        fixedSizeStackView.addArrangedSubview(forceCentered)
         
         self.specificInView = fixedSizeStackView
     }
@@ -327,6 +357,10 @@ class SettingViewController: UIViewController, SettingsDeleagte {
             case .fixedSizeHeight:
                 let widthValue = (self.collection?.fixedCellSize != nil) ?  self.collection?.fixedCellSize?.width : item.getValue()
                 collection?.fixedCellSize = CGSize(width: widthValue!, height: item.getValue())
+                break
+                
+            case .forceCenterd:
+                collection?.forceCentered = item.getBoolValue()
                 break
 
             }
