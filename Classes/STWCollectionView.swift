@@ -10,66 +10,77 @@ import UIKit
 
 /// Multicast Delegate
 
+
 class STWCollectionProxy: NSObject, STWCollectionViewDelegate {
     
-    weak var delegateInside: STWCollectionViewDelegate?
-    weak var delegateOutside: STWCollectionViewDelegate?
+    weak var delegateInsideCustom: STWCollectionViewDelegate?
+    weak var delegateOutsideCustom: STWCollectionViewDelegate?
+    weak var delegateOutsideDefault: UICollectionViewDelegate?
     
     
     // MARK: Common Methods UICollectionViewDelegate Proxy
     
     public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        delegateInside?.collectionView?(collectionView, didSelectItemAt: indexPath)
-        delegateOutside?.collectionView?(collectionView, didSelectItemAt: indexPath)
+        delegateInsideCustom?.collectionView?(collectionView, didSelectItemAt: indexPath)
+        delegateOutsideCustom?.collectionView?(collectionView, didSelectItemAt: indexPath)
+        delegateOutsideDefault?.collectionView?(collectionView, didSelectItemAt: indexPath)
     }
     
     public func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        delegateInside?.collectionView?(collectionView, willDisplay: cell, forItemAt: indexPath)
-        delegateOutside?.collectionView?(collectionView, willDisplay: cell, forItemAt: indexPath)
+        delegateInsideCustom?.collectionView?(collectionView, willDisplay: cell, forItemAt: indexPath)
+        delegateOutsideCustom?.collectionView?(collectionView, willDisplay: cell, forItemAt: indexPath)
+        delegateOutsideDefault?.collectionView?(collectionView, willDisplay: cell, forItemAt: indexPath)
     }
     
     public func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
-        delegateInside?.collectionView?(collectionView, didDeselectItemAt: indexPath)
-        delegateOutside?.collectionView?(collectionView, didDeselectItemAt: indexPath)
+        delegateInsideCustom?.collectionView?(collectionView, didDeselectItemAt: indexPath)
+        delegateOutsideCustom?.collectionView?(collectionView, didDeselectItemAt: indexPath)
+        delegateOutsideDefault?.collectionView?(collectionView, didDeselectItemAt: indexPath)
     }
     
     public func collectionView(_ collectionView: UICollectionView, didHighlightItemAt indexPath: IndexPath) {
-        delegateInside?.collectionView?(collectionView, didHighlightItemAt: indexPath)
-        delegateOutside?.collectionView?(collectionView, didHighlightItemAt: indexPath)
+        delegateInsideCustom?.collectionView?(collectionView, didHighlightItemAt: indexPath)
+        delegateOutsideCustom?.collectionView?(collectionView, didHighlightItemAt: indexPath)
+        delegateOutsideDefault?.collectionView?(collectionView, didHighlightItemAt: indexPath)
     }
     
     public func collectionView(_ collectionView: UICollectionView, didUnhighlightItemAt indexPath: IndexPath) {
-        delegateInside?.collectionView?(collectionView, didUnhighlightItemAt: indexPath)
-        delegateOutside?.collectionView?(collectionView, didUnhighlightItemAt: indexPath)
+        delegateInsideCustom?.collectionView?(collectionView, didUnhighlightItemAt: indexPath)
+        delegateOutsideCustom?.collectionView?(collectionView, didUnhighlightItemAt: indexPath)
+        delegateOutsideDefault?.collectionView?(collectionView, didUnhighlightItemAt: indexPath)
     }
     
     public func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        delegateInside?.collectionView?(collectionView, didEndDisplaying: cell, forItemAt: indexPath)
-        delegateOutside?.collectionView?(collectionView, didEndDisplaying: cell, forItemAt: indexPath)
+        delegateInsideCustom?.collectionView?(collectionView, didEndDisplaying: cell, forItemAt: indexPath)
+        delegateOutsideCustom?.collectionView?(collectionView, didEndDisplaying: cell, forItemAt: indexPath)
+        delegateOutsideDefault?.collectionView?(collectionView, didEndDisplaying: cell, forItemAt: indexPath)
     }
     
     // MARK: Common Methods UIScrollViewDelegate Proxy
     
     public func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        delegateInside?.scrollViewDidScroll?(scrollView)
-        delegateOutside?.scrollViewDidScroll?(scrollView)
+        delegateInsideCustom?.scrollViewDidScroll?(scrollView)
+        delegateOutsideCustom?.scrollViewDidScroll?(scrollView)
+        delegateOutsideDefault?.scrollViewDidScroll?(scrollView)
     }
     
     public func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        delegateInside?.scrollViewDidEndDecelerating?(scrollView)
-        delegateOutside?.scrollViewDidEndDecelerating?(scrollView)
+        delegateInsideCustom?.scrollViewDidEndDecelerating?(scrollView)
+        delegateOutsideCustom?.scrollViewDidEndDecelerating?(scrollView)
+        delegateOutsideDefault?.scrollViewDidEndDecelerating?(scrollView)
     }
     
     public func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
-        delegateInside?.scrollViewDidEndScrollingAnimation?(scrollView)
-        delegateOutside?.scrollViewDidEndScrollingAnimation?(scrollView)
+        delegateInsideCustom?.scrollViewDidEndScrollingAnimation?(scrollView)
+        delegateOutsideCustom?.scrollViewDidEndScrollingAnimation?(scrollView)
+        delegateOutsideDefault?.scrollViewDidEndScrollingAnimation?(scrollView)
     }
     
     public func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        delegateInside?.scrollViewDidEndDragging?(scrollView, willDecelerate: decelerate)
-        delegateOutside?.scrollViewDidEndDragging?(scrollView, willDecelerate: decelerate)
+        delegateInsideCustom?.scrollViewDidEndDragging?(scrollView, willDecelerate: decelerate)
+        delegateOutsideCustom?.scrollViewDidEndDragging?(scrollView, willDecelerate: decelerate)
+        delegateOutsideDefault?.scrollViewDidEndDragging?(scrollView, willDecelerate: decelerate)
     }
-    
 }
 
 
@@ -217,17 +228,23 @@ class STWCollectionView: UICollectionView, STWCollectionViewDelegate  {
     private var proxy = STWCollectionProxy()
     
     override var delegate: UICollectionViewDelegate? {
-        get {
-            return super.delegate
-        }
+        get { return super.delegate }
         set{
-            self.proxy.delegateOutside = newValue as? STWCollectionViewDelegate
+            
+            if let _ = newValue as? STWCollectionViewDelegate {
+                self.proxy.delegateOutsideCustom = newValue as? STWCollectionViewDelegate
+                self.proxy.delegateOutsideDefault = nil
+            }else{
+                self.proxy.delegateOutsideDefault = newValue
+                self.proxy.delegateOutsideCustom = nil
+            }
+            
         }
     }
     
     public convenience init() {
         self.init(frame: CGRect.zero)
-        self.proxy.delegateInside = self
+        self.proxy.delegateInsideCustom = self
     }
     
     public init(frame: CGRect) {
@@ -541,21 +558,21 @@ class STWCollectionView: UICollectionView, STWCollectionViewDelegate  {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         DispatchQueue.main.async {
             let percentages = self.calculatePercentages(scrollView: scrollView)
-            self.proxy.delegateOutside?.collectionViewDidScrollWithPercentages(self, visibleIndexPaths: self.currentVisibleIndexPaths, percentageVisibleIndexPaths: percentages)
+            self.proxy.delegateOutsideCustom?.collectionViewDidScrollWithPercentages(self, visibleIndexPaths: self.currentVisibleIndexPaths, percentageVisibleIndexPaths: percentages)
         }
     }
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         DispatchQueue.main.async {
             let percentages = self.calculatePercentages(scrollView: scrollView)
-            self.proxy.delegateOutside?.collectionViewDidEndDeceleratingWithPercentages(self, visibleIndexPaths: self.currentVisibleIndexPaths, percentageVisibleIndexPaths: percentages)
+            self.proxy.delegateOutsideCustom?.collectionViewDidEndDeceleratingWithPercentages(self, visibleIndexPaths: self.currentVisibleIndexPaths, percentageVisibleIndexPaths: percentages)
         }
     }
     
     func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
         DispatchQueue.main.async {
             let percentages = self.calculatePercentages(scrollView: scrollView)
-            self.proxy.delegateOutside?.collectionViewDidEndScrollingAnimationWithPercentages(self, visibleIndexPaths: self.currentVisibleIndexPaths, percentageVisibleIndexPaths: percentages)
+            self.proxy.delegateOutsideCustom?.collectionViewDidEndScrollingAnimationWithPercentages(self, visibleIndexPaths: self.currentVisibleIndexPaths, percentageVisibleIndexPaths: percentages)
         }
     }
     
