@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
     s.platform = :ios
-    s.version = "0.0.6"
+    s.version = "0.0.8"
     s.ios.deployment_target = '9.0'
     s.name = "STWCollectionView"
  	s.summary      = "A swift UICollectionView with carousel effect."
