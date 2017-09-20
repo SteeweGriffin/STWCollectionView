@@ -25,7 +25,7 @@ Further, STWCollectionView has a delegate to better manage cells during the scro
         :tag => s.version.to_s
     }
 
-    s.source_files = "STWPageViewController/*.swift"
+    s.source_files = "STWCollectionView/*.swift"
     
     s.framework  = "UIKit"
     
