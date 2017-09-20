@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import STWCollectionView
 
 enum SettingItemType:String {
     
@@ -27,7 +28,7 @@ extension String {
     
     func getCGFloat() -> CGFloat {
         guard let number = NumberFormatter().number(from: self) else { return 0.0 }
-        return CGFloat(number)
+        return CGFloat(truncating: number)
     }
 
 }
@@ -100,11 +101,11 @@ class SettingItemView: UIView {
         self.switcher.setOn(active, animated: false)
     }
     
-    func inputDidChange(_ sender:UITextField) {
+    @objc func inputDidChange(_ sender:UITextField) {
         self.delegate?.didChangeValue(item: self)
     }
     
-    func switcherDidChange(_ sender:UISwitch) {
+    @objc func switcherDidChange(_ sender:UISwitch) {
         self.delegate?.didChangeValue(item: self)
     }
     
@@ -278,13 +279,13 @@ class SettingViewController: UIViewController, SettingsDeleagte {
     }
     
     //Gesture
-    func dismissKeyboard(){
+    @objc func dismissKeyboard(){
         self.view.endEditing(true)
     }
     
     //Segment Direction change
     
-    func segmentDirectionDidChange(_ sender:UISegmentedControl) {
+    @objc func segmentDirectionDidChange(_ sender:UISegmentedControl) {
         switch sender.selectedSegmentIndex {
         case 0:
             self.collection?.direction = .horizontal
@@ -304,7 +305,7 @@ class SettingViewController: UIViewController, SettingsDeleagte {
     
     //Segment Type change
     
-    func segmentTypeDidChange(_ sender:UISegmentedControl) {
+    @objc func segmentTypeDidChange(_ sender:UISegmentedControl) {
         switch sender.selectedSegmentIndex {
         case 0:
             

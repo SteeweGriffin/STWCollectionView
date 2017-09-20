@@ -1,8 +1,8 @@
 //
 //  AppDelegate.swift
-//  STWCollectionView
+//  Example
 //
-//  Created by Steewe MacBook Pro on 02/05/17.
+//  Created by Steewe MacBook Pro on 20/09/17.
 //  Copyright © 2017 Steewe. All rights reserved.
 //
 

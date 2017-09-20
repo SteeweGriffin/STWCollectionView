@@ -8,9 +8,9 @@
 
 import UIKit
 
-class STWCollectionViewFlowLayout: UICollectionViewFlowLayout {
+open class STWCollectionViewFlowLayout: UICollectionViewFlowLayout {
 
-    override func invalidateLayout(with context: UICollectionViewLayoutInvalidationContext) {
+    open override func invalidateLayout(with context: UICollectionViewLayoutInvalidationContext) {
         
         super.invalidateLayout(with: context)
         
@@ -35,7 +35,7 @@ class STWCollectionViewFlowLayout: UICollectionViewFlowLayout {
         }
     }
 
-    override func targetContentOffset(forProposedContentOffset proposedContentOffset: CGPoint, withScrollingVelocity velocity: CGPoint) -> CGPoint {
+    open override func targetContentOffset(forProposedContentOffset proposedContentOffset: CGPoint, withScrollingVelocity velocity: CGPoint) -> CGPoint {
         
         
         guard let collectionView = collectionView as? STWCollectionView else { return proposedContentOffset }

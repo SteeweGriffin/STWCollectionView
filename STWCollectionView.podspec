@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
     s.platform = :ios
-    s.version = "0.0.8"
+    s.version = "0.1.0"
     s.ios.deployment_target = '9.0'
     s.name = "STWCollectionView"
  	s.summary      = "A swift UICollectionView with carousel effect."
@@ -25,7 +25,7 @@ Further, STWCollectionView has a delegate to better manage cells during the scro
         :tag => s.version.to_s
     }
 
-    s.source_files = "Classes/**/*.*"
+    s.source_files = "STWPageViewController/*.swift"
     
     s.framework  = "UIKit"
     
