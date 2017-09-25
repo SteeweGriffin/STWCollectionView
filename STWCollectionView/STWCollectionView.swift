@@ -145,7 +145,7 @@ open class STWCollectionView: UICollectionView, STWCollectionViewDelegate  {
     
     open var verticalPadding:CGFloat = 20 {
         didSet {
-            if fixedCellSize == nil || direction == .vertical { self.updateItemSize() }
+            if (fixedCellSize == nil || direction == .vertical) && oldValue != verticalPadding { self.updateItemSize() }
         }
     }
     
@@ -157,7 +157,7 @@ open class STWCollectionView: UICollectionView, STWCollectionViewDelegate  {
     
     open var horizontalPadding:CGFloat = 20 {
         didSet {
-            if fixedCellSize == nil || direction == .horizontal { self.updateItemSize() }
+            if (fixedCellSize == nil || direction == .horizontal) && oldValue != horizontalPadding { self.updateItemSize() }
         }
     }
     
@@ -166,7 +166,9 @@ open class STWCollectionView: UICollectionView, STWCollectionViewDelegate  {
     /// - default: 20
     
     open var itemSpacing:CGFloat = 20 {
-        didSet { self.updateItemSize() }
+        didSet {
+            if oldValue != itemSpacing { self.updateItemSize() }
+        }
     }
     
     
@@ -176,7 +178,7 @@ open class STWCollectionView: UICollectionView, STWCollectionViewDelegate  {
     
     open var fixedCellsNumber:Int = 1 {
         didSet {
-            if fixedCellSize == nil { self.updateItemSize() }
+            if fixedCellSize == nil && oldValue != fixedCellsNumber { self.updateItemSize() }
         }
     }
     
@@ -185,14 +187,18 @@ open class STWCollectionView: UICollectionView, STWCollectionViewDelegate  {
     /// - Disables fixedCellsNumber when is setted
     
     open var fixedCellSize:CGSize? {
-        didSet { self.updateItemSize() }
+        didSet {
+            if oldValue != fixedCellSize { self.updateItemSize() }
+        }
     }
     
     /// Force the contentInset of STWCollectionView so that first and last items are centered
     /// - Work only with fixedCellSize setted
     
     open var forceCentered:Bool = false {
-        didSet { self.updateItemSize() }
+        didSet {
+            if oldValue != forceCentered { self.updateItemSize() }
+        }
     }
     
     /// Direction of scrolling
@@ -200,8 +206,18 @@ open class STWCollectionView: UICollectionView, STWCollectionViewDelegate  {
     
     open var direction:UICollectionViewScrollDirection = .horizontal {
         didSet {
-            layout.scrollDirection = direction
-            self.updateItemSize()
+            if oldValue != direction {
+                layout.scrollDirection = direction
+                self.updateItemSize()
+            }
+        }
+    }
+    
+    /// Check bounds Size
+    
+    private var checkSize:CGSize? {
+        didSet {
+            if oldValue != checkSize { self.updateItemSize() }
         }
     }
     
@@ -287,6 +303,8 @@ open class STWCollectionView: UICollectionView, STWCollectionViewDelegate  {
         var widthItem:CGFloat = 0
         var heightItem:CGFloat = 0
         
+        self.checkSize = self.bounds.size
+        
         if fixedCellSize != nil{
             
             switch direction {
@@ -295,7 +313,7 @@ open class STWCollectionView: UICollectionView, STWCollectionViewDelegate  {
                 
                 verticalPadding = (self.bounds.size.height - fixedCellSize!.height)/2
                 var tempfixedCellsNumber = (self.bounds.size.width - (horizontalPadding * 2) + itemSpacing) / (fixedCellSize!.width + itemSpacing)
-                
+
                 if tempfixedCellsNumber <= 1 { tempfixedCellsNumber = 1 }
                 fixedCellsNumber = Int(floor(tempfixedCellsNumber))
                 
@@ -358,6 +376,8 @@ open class STWCollectionView: UICollectionView, STWCollectionViewDelegate  {
         var newPoint = CGPoint.zero
         
         switch direction {
+            
+            
         case .horizontal:
             
             let stepPage:CGFloat = self.itemSize.width + itemSpacing
@@ -447,6 +467,9 @@ open class STWCollectionView: UICollectionView, STWCollectionViewDelegate  {
     
     open override func layoutSubviews() {
         super.layoutSubviews()
+        
+        self.checkSize = self.bounds.size
+        
         if self.itemSize != layout.itemSize {
             self.updateItemSize()
         }

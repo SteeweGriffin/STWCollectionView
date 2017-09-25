@@ -14,7 +14,7 @@ You can set the space between the cells and the vertical and horizontal padding 
 Further, STWCollectionView has a delegate to better manage cells during the scrolling phase such as: the cell's currently visible indexPaths and their percentage of positioning based on the center.
 
 <kbd>
-![Demo](screenshots/exampleSTWCollectionView.gif)
+![Image](screenshots/exampleSTWCollectionView.gif)
 </kbd>
 
 ## Installation

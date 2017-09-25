@@ -11,7 +11,7 @@
 		0B42D6EB1F729D79002970B0 /* STWCollectionView.h in Headers */ = {isa = PBXBuildFile; fileRef = 0B42D6DD1F729D79002970B0 /* STWCollectionView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0B42D6F91F729E08002970B0 /* STWCollectionViewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B42D6F71F729E08002970B0 /* STWCollectionViewFlowLayout.swift */; };
 		0B42D6FA1F729E08002970B0 /* STWCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B42D6F81F729E08002970B0 /* STWCollectionView.swift */; };
-		0B42D6FC1F729E23002970B0 /* STWCollectionViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B42D6FB1F729E23002970B0 /* STWCollectionViewTests.swift */; };
+		0BE6DD901F79211300A02AD4 /* STWCollectionViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE6DD8F1F79211300A02AD4 /* STWCollectionViewTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -32,7 +32,7 @@
 		0B42D6EA1F729D79002970B0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0B42D6F71F729E08002970B0 /* STWCollectionViewFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STWCollectionViewFlowLayout.swift; sourceTree = "<group>"; };
 		0B42D6F81F729E08002970B0 /* STWCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STWCollectionView.swift; sourceTree = "<group>"; };
-		0B42D6FB1F729E23002970B0 /* STWCollectionViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = STWCollectionViewTests.swift; path = ../../GitHub/STWCollectionView/STWCollectionViewTests/STWCollectionViewTests.swift; sourceTree = "<group>"; };
+		0BE6DD8F1F79211300A02AD4 /* STWCollectionViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STWCollectionViewTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,8 +86,8 @@
 		0B42D6E71F729D79002970B0 /* STWCollectionViewTests */ = {
 			isa = PBXGroup;
 			children = (
-				0B42D6FB1F729E23002970B0 /* STWCollectionViewTests.swift */,
 				0B42D6EA1F729D79002970B0 /* Info.plist */,
+				0BE6DD8F1F79211300A02AD4 /* STWCollectionViewTests.swift */,
 			);
 			path = STWCollectionViewTests;
 			sourceTree = "<group>";
@@ -159,6 +159,7 @@
 					};
 					0B42D6E21F729D79002970B0 = {
 						CreatedOnToolsVersion = 9.0;
+						LastSwiftMigration = 0900;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -212,7 +213,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0B42D6FC1F729E23002970B0 /* STWCollectionViewTests.swift in Sources */,
+				0BE6DD901F79211300A02AD4 /* STWCollectionViewTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -353,6 +354,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = STWCollectionView/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = Steewe.STWCollectionView;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
@@ -376,6 +378,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = STWCollectionView/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = Steewe.STWCollectionView;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
@@ -389,12 +392,15 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 4EQKB8AR6W;
 				INFOPLIST_FILE = STWCollectionViewTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = Steewe.STWCollectionViewTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -404,12 +410,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 4EQKB8AR6W;
 				INFOPLIST_FILE = STWCollectionViewTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = Steewe.STWCollectionViewTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
