@@ -8,7 +8,7 @@
 
 import UIKit
 
-/// Multicast Delegate
+//MARK: - Multicast Delegate
 
 internal class STWCollectionProxy: NSObject, STWCollectionViewDelegate {
     
@@ -17,7 +17,7 @@ internal class STWCollectionProxy: NSObject, STWCollectionViewDelegate {
     weak var delegateOutsideDefault: UICollectionViewDelegate?
     
     
-    // MARK: Common Methods UICollectionViewDelegate Proxy
+    //Common Methods UICollectionViewDelegate Proxy
     
     internal func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         delegateInsideCustom?.collectionView?(collectionView, didSelectItemAt: indexPath)
@@ -55,7 +55,7 @@ internal class STWCollectionProxy: NSObject, STWCollectionViewDelegate {
         delegateOutsideDefault?.collectionView?(collectionView, didEndDisplaying: cell, forItemAt: indexPath)
     }
     
-    // MARK: Common Methods UIScrollViewDelegate Proxy
+    //Common Methods UIScrollViewDelegate Proxy
     
     public func scrollViewDidScroll(_ scrollView: UIScrollView) {
         delegateInsideCustom?.scrollViewDidScroll?(scrollView)
@@ -82,6 +82,9 @@ internal class STWCollectionProxy: NSObject, STWCollectionViewDelegate {
     }
 }
 
+
+
+//MARK: Delegate
 
 /// STWCollectionViewDelegate extends UICollectionViewDelegate by adding method collectionViewDidScrollWithPercentages
 
@@ -126,6 +129,8 @@ public protocol STWCollectionViewDelegate: UICollectionViewDelegate {
     
 }
 
+//MARK: - Delegate Extension
+
 extension STWCollectionViewDelegate {
     
     public func collectionViewDidScrollWithPercentages(_ collectionView: STWCollectionView, visibleIndexPaths indexPaths:[IndexPath], percentageVisibleIndexPaths percentages:[CGFloat]){}
@@ -138,6 +143,7 @@ open class STWCollectionView: UICollectionView, STWCollectionViewDelegate  {
     
     private let layout:STWCollectionViewFlowLayout = STWCollectionViewFlowLayout()
     
+    //MARK: Custom settings
     
     /// Distance of cells form top and bottom border
     /// - Disabled if the STWCollectionView is in horizontal and has a fixedCellSize
@@ -213,6 +219,30 @@ open class STWCollectionView: UICollectionView, STWCollectionViewDelegate  {
         }
     }
     
+    //MARK: - Delegate
+    
+    open override var delegate: UICollectionViewDelegate? {
+        get { return super.delegate }
+        set{
+            
+            if let _ = newValue as? STWCollectionViewDelegate {
+                self.proxy.delegateOutsideCustom = newValue as? STWCollectionViewDelegate
+                self.proxy.delegateOutsideDefault = nil
+            }else{
+                self.proxy.delegateOutsideDefault = newValue
+                self.proxy.delegateOutsideCustom = nil
+            }
+            
+        }
+    }
+    
+    //MARK: Public private set properties
+    
+    open private(set) var offsetHorizontalPadding:CGFloat = 0
+    open private(set) var offsetVerticalPadding:CGFloat = 0
+    
+    //MARK: - Private properties
+    
     /// Check bounds Size
     
     private var checkSize:CGSize? {
@@ -220,10 +250,6 @@ open class STWCollectionView: UICollectionView, STWCollectionViewDelegate  {
             if oldValue != checkSize { self.updateItemSize() }
         }
     }
-    
-    
-    open private(set) var offsetHorizontalPadding:CGFloat = 0
-    open private(set) var offsetVerticalPadding:CGFloat = 0
     
     /// Size cells
     
@@ -242,20 +268,7 @@ open class STWCollectionView: UICollectionView, STWCollectionViewDelegate  {
     
     private var proxy = STWCollectionProxy()
     
-    open override var delegate: UICollectionViewDelegate? {
-        get { return super.delegate }
-        set{
-            
-            if let _ = newValue as? STWCollectionViewDelegate {
-                self.proxy.delegateOutsideCustom = newValue as? STWCollectionViewDelegate
-                self.proxy.delegateOutsideDefault = nil
-            }else{
-                self.proxy.delegateOutsideDefault = newValue
-                self.proxy.delegateOutsideCustom = nil
-            }
-            
-        }
-    }
+    //MARK: Initialize
     
     public convenience init() {
         self.init(frame: CGRect.zero)
@@ -285,6 +298,33 @@ open class STWCollectionView: UICollectionView, STWCollectionViewDelegate  {
             self.updateItemSize()
         }
     }
+    
+    //MARK: Public methods
+    
+    /**
+     
+     Scrolls STWCollectionView at indexPath
+     
+     - parameter indexPath: cell's IndexPath at scroll
+     - parameter animated: scrolling is animated
+     
+     */
+    
+    public func scrollTo(indexPath:IndexPath, animated:Bool){
+        self.setContentOffset(self.calculateNewPoint(indexPath), animated: animated)
+    }
+    
+    open override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        self.checkSize = self.bounds.size
+        
+        if self.itemSize != layout.itemSize {
+            self.updateItemSize()
+        }
+    }
+    
+    //MARK: - Private methods
     
     /**
      
@@ -454,29 +494,6 @@ open class STWCollectionView: UICollectionView, STWCollectionViewDelegate  {
     
     /**
      
-     Scrolls STWCollectionView at indexPath
-     
-     - parameter indexPath: cell's IndexPath at scroll
-     - parameter animated: scrolling is animated
-     
-     */
-    
-    public func scrollTo(indexPath:IndexPath, animated:Bool){
-        self.setContentOffset(self.calculateNewPoint(indexPath), animated: animated)
-    }
-    
-    open override func layoutSubviews() {
-        super.layoutSubviews()
-        
-        self.checkSize = self.bounds.size
-        
-        if self.itemSize != layout.itemSize {
-            self.updateItemSize()
-        }
-    }
-    
-    /**
-     
      Calculates current central visible cell's indexPath
      
      - returns a CGFloat because in case fixedCellsNumber are even, the center indexPath is in middle beetween two values
@@ -575,7 +592,7 @@ open class STWCollectionView: UICollectionView, STWCollectionViewDelegate  {
         return percentages
     }
     
-    // MARK: UIScrollViewDelegate
+    // MARK: - UIScrollViewDelegate
     
     open func scrollViewDidScroll(_ scrollView: UIScrollView) {
         DispatchQueue.main.async {
@@ -597,5 +614,4 @@ open class STWCollectionView: UICollectionView, STWCollectionViewDelegate  {
             self.proxy.delegateOutsideCustom?.collectionViewDidEndScrollingAnimationWithPercentages(self, visibleIndexPaths: self.currentVisibleIndexPaths, percentageVisibleIndexPaths: percentages)
         }
     }
-    
 }

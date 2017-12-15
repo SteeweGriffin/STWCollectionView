@@ -8,6 +8,8 @@
 
 import UIKit
 
+//MARK: - CollectionViewLayout
+
 open class STWCollectionViewFlowLayout: UICollectionViewFlowLayout {
 
     open override func invalidateLayout(with context: UICollectionViewLayoutInvalidationContext) {

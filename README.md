@@ -178,7 +178,7 @@ This pod requires a deployment target of iOS 9.0 or greater
 
 ## Author
 
-[@Steewitter](https://twitter.com/Steewitter), me@steewe.com
+[@Steewitter](https://twitter.com/Steewitter), [me@steewe.com](mailto:me@steewe.com)
 
 ## License
 
